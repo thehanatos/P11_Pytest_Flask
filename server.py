@@ -30,8 +30,8 @@ def index():
 def showSummary():
     club = [
         club for club in clubs if club['email'] == request.form['email']][0]
-    return render_template('welcome.html,'
-                           'club=club, competitions=competitions')
+    return render_template('welcome.html',
+                           club=club, competitions=competitions)
 
 
 @app.route('/book/<competition>/<club>')
