@@ -4,13 +4,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GUDLFT Registration</title>
 </head>
+
 <body>
     <h1>Welcome to the GUDLFT Registration Portal!</h1>
+    {% if error %}
+        <div style="color: red; font-weight: bold; margin: 10px 0;">
+            {{ error }}
+        </div>
+    {% endif %}
     Please enter your secretary email to continue:
     <form action="showSummary" method="post">
         <label for="email">Email:</label>
         <input type="email" name="email" id=""/>
         <button type="submit">Enter</button>
     </form>
+
 </body>
 </html>
