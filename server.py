@@ -34,7 +34,8 @@ def showSummary():
     if clubs_found:
         club = clubs_found[0]
         return render_template('welcome.html',
-                               club=club, competitions=competitions)
+                               club=club, competitions=competitions,
+                               clubs=clubs)
     else:
         error_message = "Sorry, that email wasn't found."
         return render_template('index.html', error=error_message)
