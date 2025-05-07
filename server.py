@@ -64,10 +64,22 @@ def book(competition, club):
 
 @app.route('/purchasePlaces', methods=['POST'])
 def purchasePlaces():
-    competition = [
-        c for c in competitions if c['name'] == request.form['competition']][0]
-    club = [c for c in clubs if c['name'] == request.form['club']][0]
+    competition = next(
+        (c for c in competitions if c['name'] == request.form['competition']), None)
+    club = next((c for c in clubs if c['name'] == request.form['club']), None)
     placesRequired = int(request.form['places'])
+
+    if not competition or not club:
+        flash('Invalid competition or club.')
+        return redirect(url_for('index'))
+
+    # Vérifie si la compétition est passée
+    competition_date = datetime.strptime(
+        competition['date'], "%Y-%m-%d %H:%M:%S")
+    if competition_date < datetime.now():
+        flash("You cannot purchase places for past competitions.")
+        return render_template(
+            'welcome.html', club=club, competitions=competitions)
 
     if placesRequired > 12:
         flash('You cannot purchase more than 12 places at once.')
@@ -79,8 +91,16 @@ def purchasePlaces():
         return render_template(
             'welcome.html', club=club, competitions=competitions)
 
+    if placesRequired > int(club['points']):
+        flash('You do not have enough points to book these places.')
+        return render_template(
+            'welcome.html', club=club, competitions=competitions)
+
+    # Tout est OK, on met à jour
     competition['numberOfPlaces'] = int(
         competition['numberOfPlaces']) - placesRequired
+    club['points'] = int(club['points']) - placesRequired
+
     flash('Great - booking complete!')
     return render_template(
         'welcome.html', club=club, competitions=competitions)
