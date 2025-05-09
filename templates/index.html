@@ -19,5 +19,19 @@
         <button type="submit">Enter</button>
     </form>
 
+    <h2>Clubs and Points:</h2>
+    <table border="1" cellpadding="8" cellspacing="0">
+        <tr>
+            <th>Club</th>
+            <th>Points</th>
+        </tr>
+        {% for club in clubs %}
+        <tr>
+            <td>{{ club['name'] }}</td>
+            <td>{{ club['points'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
 </body>
 </html>
